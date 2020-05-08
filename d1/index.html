@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>http://www.basics.com</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    <style>
+        body,html{clear: both;position: relative;}
+        body {font-family: 'Noto Sans KR', sans-serif;}
+        
+        
+        
+        /* 사이드메뉴*/
+        .collap{position: fixed;top: 0;right: -110%;z-index: 100;background-color: #333;width: 50vw;height: 100vh;box-sizing: border-box;padding-top: 90px;transition-duration: 0.7s;}
+        .collap.on{right: 0;}
+        .collap li{clear: both;position: relative;}
+        .collap li a{display: block;height: 32px;}
+        .collap li a.dep1{color: #ccc;line-height: 3;padding-left: 3em;height: 42px;font-size: 1.2rem;font-weight: bold;}
+        .collap li a.dep1:after{content: "▼";position: absolute;left: 50%;}
+        .collap li.on a.dep1:after{content: "▲";}
+        
+        
+        
+        /* 서브메뉴*/
+        .collap li ul.dep2{display: none;visibility: visible; opacity: 1; width: 100%;height: auto;background-color: transparent;position: static;}
+        .collap li.on ul.dep2{ 
+            display: block;visibility: visible;}
+        .collap li ul.dep2 li a{padding-left: 10%;color: #333;font-size: 1rem;}
+        
+        
+        
+        /* 헤더영역*/
+        .hd{clear: both;position: fixed;top: 0;left: 0;z-index: 110;width: 100%;height: 90px;background-color: rgba(0,0,0,0);}
+        .logo{display: block; width: 150px;height: auto;float: left;margin-left: 2em;margin-top: 2em;}
+        .logo img{display: block;width: 100%;}
+        .gnb{float: left;margin-left: 13em;}
+        .gnb li{float:left; width: 170px;position: relative;}
+        .gnb li a{display: block;text-align: center;padding: 1em;line-height: 3.5;font-size: 1.3em;}
+        .gnb li a.dep1{color: #fff;background-color: transparent;}
+        .gnb li:hover a.dep1{background-color: ;}
+        
+        
+        
+        /* 서브메뉴*/
+        .dep2{width: 100%;height: 0;position: absolute;background-color: azure;visibility:hidden;opacity:0;}
+        .gnb li:hover .dep2{visibility:visible;opacity:1;}
+        .dep2 li{
+            clear: both;
+            background-color: #000;
+            width: 100%;}
+        .dep2 li a{clear: both;display: block;color: #333;padding: 0.5em;font-size: 1em;background-color: #fff;}
+        .dep2 li a:hover{text-decoration: underline;}
+        .lang{display: block;position: absolute;top: 0.5em;right: 18%;z-index: 110;width: 130px;height: 42px;border: 2px solid #fff;color: #fff;line-height: 3;}
+        .lang.on{height: 106px;}
+        .this_lang{
+            display: block;
+            width: 130px;color: #fff;line-height: 2.4;padding: 0.5em;
+            background-image: url(img/lang_icon.png);
+            background-repeat: no-repeat;
+            background-position: 0.5em center;
+        }
+        .this_lang:after{content: "▼";position: absolute;right: 1em;}
+        .this_lang.on:after{content: "▲";}
+        .lang_list{
+            display: block;
+            height: 0;
+            overflow: hidden;
+        }
+        .lang_list.on{
+            height: 64px;
+        }
+        .lang_list li{clear: both;line-height: 32px;text-indent: 0.8rem;}
+        .lang_list a{display: block;color: #fff;width: 130px;}
+        .lst_btn{display: block;position: absolute;top: 0.5em;right: 2%;z-index: 110;width: 48px;height: 48px;border: 2px solid #fff;cursor: pointer;box-sizing: border-box;}
+        .lst_btn .line{display: block;height: 2px;background-color: #fff;position: absolute;right: 0.5em;z-index: 110;transform: rotate(0deg);transition-duration: 0.4s;}
+        .lst_btn .item1{width: 20px;top: 16px;}
+        .lst_btn .item2{width: 30px;top: 10px;}
+        .lst_btn:hover .item1{width: 30px;}
+        .lst_btn:hover .item2{width: 20px;}
+        .lst_btn.on .item1{width: 30px;transform: rotate(45deg);top: 21px;}
+        .lst_btn.on .item2{width: 30px;transform: rotate(-45deg);top: 21px;}
+        
+        
+        
+        /* 섹션 1영역 */
+        .vs1{width: 100vw;height: 100vh;position:relative;clear: both;}
+        .vs_list{width: 100%;height: 100vh;}
+        .vs_list li{width: 100%;float: left;height: 100vh;background-repeat: no-repeat;background-size: cover;background-position: center center;}
+        .vs_list li.on{opacity: 1;}
+        .vs_list li.item1{background-image: url(img/content1.png);}
+        .vs_tit1{font-size: 7em;color: #ffeb75;padding-top: 0em;padding-left: 100px;transition-duration: 0.5s;opacity: 1;}
+        .vs_tit11{font-size: 2.5em;color: #fff;padding-top: 9em;padding-left: 100px;transition-duration: 0.5s;opacity: 1;;}
+        .vs_com1{font-size: 2em;color: #fff;padding-top: 1em;padding-left: 100px;transition-duration: 0.5s;opacity: 1; }
+        .vs_more1{position: absolute;text-align: center;display: block;width: 200px;padding: 0.75em 1.5em;border: 3px solid #fff;margin-top: 4em;margin-left: 100px;border-radius:50px;font-size: 1.4em;color: #fff;transition-duration: 0.5s;opacity: 1; }
+        .vs_more1:hover{}
+        .btn_box1{width: 60px;height: 24px;position: absolute;z-index: 25;left:calc(50% - 30px) ;bottom: 30px; }
+        .btn_box1 li{width: 20px;height: 20px;position: absolute; }
+        .btn_box1 li.item1{left: 0;}
+        .btn_box1 li.item2{left: 20px;}
+        .btn_box1 li.item3{left: 40px;}
+        .btn_box1 li .btn{display: block;width: 10px;height: 10px;border: 2px solid #fff;border-radius: 6px;margin: 0 auto;cursor: pointer;box-sizing: border-box;background: transparent;}
+        .btn_box1 li.on .btn{background: #fff;}
+        .play_btn{position: absolute;bottom: 30px;left:calc(50% + 30px);z-index: 25;width: 20px;height: 24px;}
+        .play_btn li .btn{display: block;width: 12px;height: 12px;background-image: url(img/slick_play.png);background-repeat: no-repeat;background-position: center center;border: 0;margin: 0 auto;}
+        .play_btn li.on .btn{background-image: url(img/slick_stop.png);}
+        
+        
+        
+        /* page2영역*/
+        .vs_lst2{width: 100%;height: 100vh;}
+        .vs_lst2 li{width: 100%;height: 100vh;float: left;background-repeat: no-repeat;background-position: center center;background-size: cover;opacity: 1;}
+        .vs_lst2 li.item1{background-image: url(img/sea.jpg);}
+        .tit_box{color: #fff;}
+        .tit_box a{color: #fff;}
+        .vs_lst2 li.on{opacity: 1;}
+        .moni2{clear: both;position: absolute;}
+        .bot1{position: absolute;color: #fff;top: 85%;left: 9.8%;font-size: 1.5em;}
+        .bot2{position: absolute;color: #fff;top: 85%;left: 29.1%;font-size: 1.5em;}
+        .bot3{position: absolute;color: #fff;top: 85%;left: 49%;font-size: 1.5em;}
+        .bot4{position: absolute;color: #fff;top: 90%;left: 10%;font-size: 1.5em;}
+        .bot5{position: absolute;color: #fff;top: 90%;left: 30%;font-size: 1.5em;}
+        .bot6{position: absolute;color: #fff;top: 90%;left: 50%;font-size: 1.5em;}
+        .vs_tit2{font-size: 7em; color: #fff;padding-top: 2em;padding-right: 100px;transition-duration: 0.5s;opacity: 1;text-align: right;}
+        .vs_com2{font-size: 2em;color: #fff; padding-top: 1em;padding-right: 100px;transition-duration: 0.5s;opacity: 1;text-align: right;line-height: 1.8em; }
+        .vs_more2{position: absolute;right: 7%;top: 70%; display: block;width: 200px;padding: 0.75em 1.5em;border: 3px solid #fff;margin-top: em;margin-right: 0px;border-radius:50px;font-size: 1.4em;color: #fff;transition-duration: 0.5s;opacity: 1;text-align: center;}
+        .vs_more2:hover{background-color: #b48125;}
+        
+        
+        
+      /*  page1영역 타이틀*/
+        .vs_list li.on .vs_tit{padding-top: 8rem;opacity: 1;}
+        .vs_list li.on .vs_com{padding-top: 2.8rem;opacity: 1;}
+        .vs_list li.on .vs_more{margin-top: 3rem;opacity: 1;}
+        
+        
+        
+        .vs_lst2 li.on .vs_tit{padding-top: 8rem;opacity: 1;}
+        .vs_lst2 li.on .vs_com{padding-top: 2.8rem;opacity: 1;}
+        .vs_lst2 li.on .vs_more{margin-top: 3rem;opacity: 1;}
+        
+        
+        
+       /* page3 영역*/
+        #page3{background-image: url(img/forest.jpg);background-repeat: no-repeat;background-position: center center;background-size: cover;}
+        .page_wrap{width: 100%;margin: 0 auto;}
+         #page3 .page_wrap.on .vs_tit{padding-top: 6em;opacity: 1;}
+         #page3 .page_wrap.on .vs_com{padding-top: 2em;opacity: 1;}
+         #page3 .page_wrap.on .vs_more{margin-top: 1.2em;opacity: 1;}
+        .not2{position: absolute;right: 15%;top: 16%; width: auto; height: 700px;}
+        .play2{position: absolute;right: 23%;top: 47.8%;cursor: pointer;width: 100px;height: auto;;border-radius: 50%;transform: scale(1);transition: 1s;}
+        .play2:hover{transform: scale(1.25);}
+        .vs_tit3{font-size: 4em;color: #fff;padding-top: 6em;padding-left: 100px;transition-duration: 0.5s;opacity: 1;}
+        .vs_com3{font-size: 2em;color: #fff;padding-top: 1em;padding-left: 100px;transition-duration: 0.5s;opacity: 1; }
+        .vs_more3{display: block;width: 200px;padding: 0.75em 1.5em;border: 3px solid #fff;margin-top: 4em;margin-left: 100px;border-radius:50px;font-size: 1.4em;color: #fff;transition-duration: 0.5s;opacity: 1;position: relative;text-align: center; }
+        .vs_more3:hover{background-color: #275f0f;}
+        
+        
+        
+       /* page4 영역*/ 
+        .vs_lst4{width: 100%;height: 100%;} 
+        .vs_lst4 li{width: 100%;height: 100%;float: left;background-repeat: no-repeat;background-position: center center;background-size: cover;} 
+        .vs_lst4 li.item1{background-image: url(img/space.jpg);}
+        .vs_lst4 li.on{opacity: 1;}
+        .vs_lst4 span{position: absolute;right: 43%;top: 61%; display: block;width: 200px;padding: 0.5em 2em;border: 3px solid #fff;border-radius:50px;font-size: 2em;color: #fff;transition-duration: 0.5s;opacity: 1;text-align: center;color: #fff;}
+        .vs_lst4 span:hover{background-color: #999;}
+        .vs_tit4{font-size: 7em; color: #fff;padding-top: 2em;padding-right: 60px;transition-duration: 0.5s;opacity: 1;text-align: center;}
+        .vs_com4{font-size: 2em;color: #fff; padding-top: 1em;padding-right: 20px;transition-duration: 0.5s;opacity: 1;text-align: center;line-height: 1.8em; }
+        
+        
+        
+        /* 푸터영역 */
+        .ft{clear: both;background-color: #222;padding: 3rem 0rem;}
+        .fnb{width: 90%;margin: 0 auto;}
+        .fnb li{float: left;}
+        .fnb li a{display: block;color: #fff;padding: 1rem;padding-right: 3rem;}
+        .fnb li:first-child a{font-weight: bold;}
+        .company{clear: both;width: 90%;margin: 0 auto;padding-top: 1rem;word-break: break-all;}
+        .company li{color: #fff;padding-right: 2rem;}
+        .company li.it1{float: left;clear: none;padding-right: 2rem;}
+        .com_lst li{float: left;line-height: 2;font-size: 0.85rem;}
+        .copyright{clear: both;color: #fff;padding-left: 5%;padding-top: 1em;}
+    </style>
+     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+     <script>
+        $(document).ready(function(){
+       var ck1 = true, ck2 = true;  
+        //펼침 메뉴의 열기/닫기 모션
+       $(".lst_btn").click(function(){
+             if(ck1){
+                 $(".collap").addClass("on");
+                 $(".lst_btn").addClass("on");
+             } else {
+                 $(".collap").removeClass("on");
+                 $(".lst_btn").removeClass("on");
+             }
+             ck1 = !ck1;
+       }); 
+       //펼침 메뉴의 서브메뉴 열기
+       $(".collap li").click(function(){
+           $(".collap li").removeClass("on");
+           $(this).addClass("on");
+       }); 
+       //언어에 대한 선택메뉴 모션
+       $(".this_lang").click(function(){
+           if(ck2) {
+              $(".lang_list").addClass("on"); 
+              $(".lang").addClass("on"); 
+              $(this).addClass("on");    
+           } else {
+              $(".lang_list").removeClass("on"); 
+              $(".lang").removeClass("on"); 
+              $(this).removeClass("on");    
+           }
+           ck2 = !ck2;
+       }); 
+       //스크롤시 메인 메뉴 모션    
+       $(window).scroll(function(){
+          var sc_top = parseInt($("body, html").scrollTop());
+            if(sc_top>=500 && sc_top<1200){
+                $(".hd").addClass("on");
+                $(".hd").removeClass("off");
+            } else if(sc_top>=1200) {
+                $(".hd").removeClass("on");
+                $(".hd").addClass("off");                      
+            } else {
+                $(".hd").removeClass("on");
+                $(".hd").removeClass("off");
+            } 
+       }); 
+        //패럴럭스 스크롤링
+        var wh = $(window).height();
+        var wd = $(window).width();
+        $(".sc_data").each(function(index){
+            $(this).attr("data-val", index*wh);
+        });
+        $(".sc_data").on("mousewheel DOMMouseScroll", function(e){
+            var secPos = parseInt($(this).attr("data-val"));
+            if(e.originalEvent.wheelDelta >= 0){
+                $("html, body").stop().animate({scrollTop:secPos - wh});
+                return false;
+            } else if(e.originalEvent.wheelDelta < 0) {
+                $("html, body").stop().animate({scrollTop:secPos + wh});
+                return false;
+            }
+        }); 
+        //page1 첫 번째 슬라이더
+        $(".btn_box1 li").click(function(i){
+            $(this).addClass("on");
+            $(this).siblings().removeClass("on");
+            var idx = $(this).index();
+            $(".vs_lst li").eq(idx).addClass("on");
+            $(".vs_lst li").eq(idx).siblings().removeClass("on");
+            $(".vs_lst").not(":animated").animate({"margin-left": idx*-1*wd});
+        });
+        
+        //page2 두 번째 슬라이더
+        var tar, tar_wd, tar_cnt;
+        tar_cnt = $(".vs_lst2 li").length;
+        tar_wd = parseInt($(".btn_fr2 li").width());
+
+        $(".btn_box2 li").click(function(e){
+            tar = $(this).index();        
+            for(var i=1;i<tar;i++){
+                $(".vs_lst2 li").eq(0).appendTo($(".vs_lst2"));
+                $(".btn_box2 li").eq(0).appendTo($(".btn_box2"));
+            }
+            nextAni();
+        });
+        function nextAni(){
+            $(".vs_lst2").not(":animated").animate({"margin-left":wd*-1}, 300, function(){
+                $(".vs_lst2 li").eq(0).appendTo($(".vs_lst2"));
+                $(".vs_lst2").css("margin-left", "0px");
+                $(".vs_lst2 li").eq(0).addClass("on");
+                $(".vs_lst2 li").eq(0).siblings().removeClass("on");
+                $(".btn_box2 li").eq(0).appendTo($(".btn_box2"));
+                $(".btn_box2 li").removeClass("on");
+                $(".btn_box2 li").eq(0).addClass("on");
+            });
+        }
+        function prevAni(){
+            $(".vs_lst2 li").eq(tar_cnt-1).prependTo($(".vs_lst2"));
+            $(".vs_lst2").css("margin-left", -wd+"px");
+            $(".vs_lst2").not(":animated").animate({"margin-left":"0px"}, 300, function(){
+                $(".vs_lst2 li").eq(0).addClass("on");
+                $(".vs_lst2 li").eq(0).siblings().removeClass("on");
+                $(".btn_box2 li").eq(tar_cnt-1).prependTo($(".btn_box2"));
+                $(".btn_box2 li").removeClass("on");
+                $(".btn_box2 li").eq(0).addClass("on");
+            });
+        }
+        $(".lr_btn_box li.left").click(function(){
+            prevAni();
+        });
+        $(".lr_btn_box li.right").click(function(){
+            nextAni();
+        });
+       });
+    </script>
+    <link rel="icon" type="img/png" sizes="32x32" href="img/logo.ico">
+</head>
+<body>
+   <nav class="collap">
+      <ul class="main_menu">
+          <li>
+            <a href="#" class="dep1">베이직북</a>
+             <ul class="dep2">
+                 <li><a href="introduction.html#page1">베이직북14</a></li>
+                 <li><a href="introduction.html#page2">액세서리</a></li>
+                 <li><a href="introduction.html#page3">성능확인하기</a></li>
+             </ul>
+          </li>
+          <li>
+            <a href="#" class="dep1">베이직닷</a>
+            <ul class="dep2">
+                <li><a href="research.html#page1">베이직닷14</a></li>
+                <li><a href="research.html#page2">액세서리</a></li>
+                <li><a href="research.html#page3">성능확인하기</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="dep1">A/S센터</a>
+            <ul class="dep2">
+                <li><a href="policy.html#page1">지역 및 지점검색</a></li>
+                <li><a href="policy.html#page2">교환/환불 범위</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="dep1">브랜드스토리</a>
+            <ul class="dep2">
+                <li><a href="overview.html#page1">기업소개</a></li>
+                <li><a href="overview.html#page2">경영원칙</a></li>
+                <li><a href="overview.html#page3">찾아오시는길</a></li>
+            </ul>
+          </li>
+          <li><a href="#" class="dep1">고객지원</a>
+            <ul class="dep2">
+                <li><a href="news.html#page1">FAQ</a></li>
+                <li><a href="news.html#page2">드라이버 다운로드</a></li>
+                <li><a href="news.html#page3">1:1문의하기</a></li>
+                <li><a href="news.html#page4">A/S 및 교환/반품 접수</a></li>
+            </ul>
+          </li>
+       </ul>
+       
+   </nav>
+   <header class="hd">
+      <a href="index.html" class="logo"><img src="img/logo.png" alt="로고"></a>
+       <nav class="gnb">
+          <ul class="main_menu">
+              <li>
+            <a href="#" class="dep1">베이직북</a>
+             <ul class="dep2">
+                 <li><a href="introduction.html#page1">베이직북14</a></li>
+                 <li><a href="introduction.html#page2">액세서리</a></li>
+                 <li><a href="introduction.html#page3">성능확인하기</a></li>
+             </ul>
+          </li>
+          <li>
+            <a href="#" class="dep1">베이직닷</a>
+            <ul class="dep2">
+                <li><a href="research.html#page1">베이직닷14</a></li>
+                <li><a href="research.html#page2">액세서리</a></li>
+                <li><a href="research.html#page3">성능확인하기</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="dep1">A/S센터</a>
+            <ul class="dep2">
+                <li><a href="policy.html#page1">지역 및 지점검색</a></li>
+                <li><a href="policy.html#page2">교환/환불 범위</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="dep1">브랜드스토리</a>
+            <ul class="dep2">
+                <li><a href="overview.html#page1">기업소개</a></li>
+                <li><a href="overview.html#page2">경영원칙</a></li>
+                <li><a href="overview.html#page3">찾아오시는길</a></li>
+            </ul>
+          </li>
+          <li><a href="#" class="dep1">고객지원</a>
+            <ul class="dep2">
+                <li><a href="news.html#page1">FAQ</a></li>
+                <li><a href="news.html#page2">드라이버 다운로드</a></li>
+                <li><a href="news.html#page3">1:1문의하기</a></li>
+                <li><a href="news.html#page4">A/S 및 교환/반품 접수</a></li>
+            </ul>
+          </li>
+          </ul> 
+       </nav>
+       <div class="lang">
+           <button class="this_lang">한국어</button>
+           <ul class="lang_list">
+               <li class="item1"><a href="index_en.html">English</a></li>
+               <li class="item2"><a href="index_jp.html">Japan</a></li>
+           </ul>
+       </div>
+       <div class="lst_btn">
+         <span class="line item1"></span>
+         <span class="line item2"></span>
+       </div>
+  
+   </header>
+   <section class="page sc_data" id="page1">
+  <figure class="vs1">
+      <ul class="vs_list">
+          <li class="item1">
+             <h2 class="vs_tit11">혁신으로 가격을 깨다</h2>
+              <h3 class="vs_tit1">베이직북14</h3>
+              <p class="vs_com1">얇고 가벼운 디자인, 훌륭한 성능, 다양한 확장 옵션,<br>충분한 배터리까지 갖춘 세련되고 실속있는 제품을<br>정직한 가격에 소개합니다.</p>
+              <a href="#" class="vs_more1">
+                  <span class="more_txt1">구매하기</span>
+                  <span class="more_arrow1"></span>
+              </a>
+          </li>
+      </ul>
+      <ul class="btn_box1">
+          <li class="btn_fr item1 on"><button class="btn"></button></li>
+          <li class="btn_fr item2"><button class="btn"></button></li>
+          <li class="btn_fr item3"><button class="btn"></button></li>
+      </ul>
+      <ul class="play_btn">
+          <li class="item4"><button class="btn"></button></li>
+      </ul>
+    </figure>
+   </section>
+   <section class="page sc_data" id="page2">
+      <figure class="vs2">
+         <a class="moni2" href=""><img src="img/moni2.png" alt=""></a>
+          <ul class="vs_lst2">
+              <li class="item1 on">
+                 <div class="tit_box2">
+                      <h3 class="vs_tit2">소개합니다, 베이직북 14</h3>
+                      <p class="vs_com2">베이직북 14는 가장 수요층이 많은 14인치 울트라북으로 만들어졌습니다.<br>사무 업무, 동영상 감상, 웹서핑, 문서 프로그램, 포토샵과 일러스트 등<br>일반적인 작업에 최척화 된 노트북입니다.<br>얇고 가벼운 디자인, 훌륭한 성능, 다양한 확장 옵션,<br>충분한 배터리까지 갖춘 세련되고 실속있는 제품을 정직한 가격에 소개합니다.</p>
+                      <a href="" class="vs_more2">
+                          <span class="more_txt2">자세히 보기</span>
+                          <span class="more_arrow2"></span>
+                      <a href="" class="bot1">더 가볍게</a>
+                      <a href="" class="bot2">IPS DISPLAY</a>
+                      <a href="" class="bot3">배터리 시간</a>
+                      <a href="" class="bot4">1.38KG</a>
+                      <a href="" class="bot5">14.1inch</a>
+                      <a href="" class="bot6">13시간</a>
+                      </a>
+                  </div>
+              </li>
+          </ul>
+      </figure>
+   </section>
+   <section class="page sc_data" id="page3">
+       <div class="page_wrap on">
+          <img src="img/nootbook.jpg" alt="" class="not2">
+          <img src="img/play.png" alt="" class="play2">
+           <div class="tit_box3">
+               <h3 class="vs_tit3">정말 대기업 노트북과 같은 성능일까?</h3>
+               <p class="vs_com3">가격은 판매처에 따라 2~3배 저렴한 반면,<br>성능은 거의 같거나 베이직북 14가 더 가볍고 빨랐습니다.</p>
+               <a href="" class="vs_more3">
+                   <span class="more_txt3">자세히 보기</span>
+                   <span class="more_arrow3"></span>
+               </a>
+           </div>
+       </div>
+   </section>
+   <section class="page sc_data" id="page4">
+       <ul class="vs_lst4">
+           <li class="item1"><a href="">
+                   <div class="pic_box4"></div>
+                   <h3 class="vs_tit4">전국 100여개 A/S서비스지점</h3>
+                   <p class="vs_com4">저희 베이직스는 보다 더 나은 서비스를 위해<br>국내 일반 사용자 PC 전문 A/S 업체 (주)주연전자서비스와 함께 A/S를<br>진행합니다. 전국 서비스 100여개 지점에서 출장, 원격 A/S 서비스를 지원합니다.</p>
+                   <a href="" class="vs_more4"></a>
+                   <span class="more_txt4">A/S 지점 확인</span>
+               </a>
+            </li>
+       </ul>
+   </section>
+   <footer class="ft">
+       <nav class="fnb">
+           <ul class="menu">
+               <li class="item1"><a href="">개인정보취급방침</a></li>
+               <li class="item2"><a href="">이용약관</a></li>
+               <li class="item3"><a href="">고객센터</a></li>
+           </ul>
+       </nav>
+       <ul class="company">
+           <li class="it1">
+               <ul class="com_lst">
+                   <li>사업자명 베이직스㈜</li>
+                   <li>대표 강신경</li>
+                   <li>사업자등록번호 5038607296</li>
+               </ul>
+           </li>
+           <li class="it2">
+               <ul class="com_lst">
+                   <li>주소 03911 서울특별시 마포구 상암동 1640,5층</li>
+                   <li>대표전화 02-308-8755</li>
+                   <li>통신판매업 신고번호 제2015-서울마포-1279호</li>
+               </ul>
+           </li>
+       </ul>
+       <p class="copyright">Copyright &copy; 2020 BASICS All rights reserved.</p>
+   </footer> 
+</body>
+</html>
